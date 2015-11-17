@@ -1,4 +1,4 @@
-from blog import app
+from asset import app
 import os
 
 app.secret_key = os.urandom(24)
