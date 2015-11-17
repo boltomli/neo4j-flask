@@ -20,11 +20,11 @@ Then:
 ```
 git clone https://github.com/nicolewhite/neo4j-flask.git
 cd neo4j-flask
-pip install virtualenv
+pip3 install virtualenv
 virtualenv venv
 source venv/bin/activate
-pip install -r requirements.txt
-python run.py
+pip3 install -r requirements.txt
+python3 run.py
 ```
 
 [http://localhost:5000](http://localhost:5000)
