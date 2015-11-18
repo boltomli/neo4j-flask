@@ -1,5 +1,5 @@
 # neo4j-flask
-A microblog application written in Python powered by Flask and Neo4j. Extension of Flask's microblog tutorial, [Flaskr](http://flask.pocoo.org/docs/0.10/tutorial/).
+An asset tracking application written in Python powered by Flask and Neo4j.
 
 ## Usage
 
@@ -18,7 +18,7 @@ Or, set `dbms.security.auth_enabled=false` in `conf/neo4j-server.properties`.
 Then:
 
 ```
-git clone https://github.com/nicolewhite/neo4j-flask.git
+git clone https://github.com/boltomli/neo4j-flask.git
 cd neo4j-flask
 pip3 install virtualenv
 virtualenv venv
