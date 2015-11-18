@@ -28,7 +28,7 @@ def add_asset():
     return redirect(url_for('index'))
 ```
 
-资产名称、ID、特性经由 `POST` 请求发出后检查是否为空。若通过检查，以 `name`、`asset_id` 和 `specs` 作为参数调用 `User.add_asset()` 方法。`add_post()` 方法定义于 `User` 类：
+资产名称、ID、特性经由 `POST` 请求发出后检查是否为空。若通过检查，以 `name`、`asset_id` 和 `specs` 作为参数调用 `User.add_asset()` 方法。`add_asset()` 方法定义于 `User` 类：
 
 ```python
 class User:
@@ -95,7 +95,7 @@ def date():
 
 <br>
 
-<h3>My assets</h3>
+<h3>Recent assets</h3>
 {% include "display_assets.html" %}
 
 {% endblock %}

@@ -11,7 +11,7 @@ index: 5
 注册页面位于 `/register`，接受 `GET` 和 `POST` 请求。访问者打开页面时发出 `GET` 请求，填写注册表单时发出 `POST` 请求。`views.py` 中 `/register` 视图定义如下：
 
 ```python
-from .models import User, get_todays_recent_posts
+from .models import User, get_recent_assets
 from flask import Flask, request, session, redirect, url_for, render_template, flash
 
 app = Flask(__name__)

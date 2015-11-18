@@ -1,21 +1,21 @@
 ---
 layout: default
-title: Logout a User
-index: 11
+title: 用户登出
+index: 9
 ---
 
-# Logout a User
+# 用户登出
 
-When all the fun is over, a user logs out by clicking the logout link at the top of the page, which sends a `GET` request to the `/logout` view:
+用户点击页面顶端的 logout 链接以登出，发送 `GET` 请求给 `/logout` 视图：
 
 ```python
-@app.route('/logout', methods=['GET'])
+@app.route('/logout')
 def logout():
     session.pop('username', None)
     flash('Logged out.')
     return redirect(url_for('index'))
 ```
 
-This removes `username` from the session and takes the visitor back to the home page. Once logged out, the visitor won't see any of the similarities shown in the previous section when visiting their own or someone else's profile.
+将把 `username` 从会话中移除，把访问者带回到主页。登出后访问者无法添加资产，除非再次登录。
 
-<p align="right"><a href="{{ site.baseurl }}/pages/add-style.html">Next: Add Style</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/add-style.html">下节：添加样式</a></p>
