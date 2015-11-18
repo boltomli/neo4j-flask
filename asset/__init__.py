@@ -7,5 +7,5 @@ def create_uniqueness_constraint(label, property):
     graph.cypher.execute(query)
 
 create_uniqueness_constraint("User", "username")
-create_uniqueness_constraint("Tag", "name")
-create_uniqueness_constraint("Post", "id")
+create_uniqueness_constraint("Asset", "asset_id")
+create_uniqueness_constraint("Spec", "name")

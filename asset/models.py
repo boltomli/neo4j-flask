@@ -36,77 +36,44 @@ class User:
         else:
             return False
 
-    def add_post(self, title, tags, text):
+    def add_asset(self, name, asset_id, specs):
         user = self.find()
-        post = Node(
-            "Post",
+        asset = Node(
+            "Asset",
             id=str(uuid.uuid4()),
-            title=title,
-            text=text,
+            name=name,
+            asset_id=asset_id,
             timestamp=timestamp(),
             date=date()
         )
-        rel = Relationship(user, "PUBLISHED", post)
+        rel = Relationship(user, "OWNS", asset)
         graph.create(rel)
 
-        tags = [x.strip() for x in tags.lower().split(',')]
-        for t in set(tags):
-            tag = graph.merge_one("Tag", "name", t)
-            rel = Relationship(tag, "TAGGED", post)
+        specs = [x.strip() for x in specs.split('|')]
+        for t in set(specs):
+            spec = graph.merge_one("Spec", "name", t)
+            rel = Relationship(spec, "APPLIES_TO", asset)
             graph.create(rel)
 
-    def like_post(self, post_id):
-        user = self.find()
-        post = graph.find_one("Post", "id", post_id)
-        graph.create_unique(Relationship(user, "LIKED", post))
-
-    def get_recent_posts(self):
+    def get_assets(self):
         query = """
-        MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
+        MATCH (user:User)-[:OWNS]->(asset:Asset)<-[:APPLIES_TO]-(spec:Spec)
         WHERE user.username = {username}
-        RETURN post, COLLECT(tag.name) AS tags
-        ORDER BY post.timestamp DESC LIMIT 5
+        RETURN asset, COLLECT(spec.name) AS specs
+        ORDER BY asset.asset_id DESC LIMIT 20
         """
-
+        # In general one user won't own many assets.
+        # Limit for performance in case.
         return graph.cypher.execute(query, username=self.username)
 
-    def get_similar_users(self):
-        # Find three users who are most similar to the logged-in user
-        # based on tags they've both blogged about.
-        query = """
-        MATCH (you:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
-              (they:User)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
-        WHERE you.username = {username} AND you <> they
-        WITH they, COLLECT(DISTINCT tag.name) AS tags, COUNT(DISTINCT tag) AS len
-        ORDER BY len DESC LIMIT 3
-        RETURN they.username AS similar_user, tags
-        """
-
-        return graph.cypher.execute(query, username=self.username)
-
-    def get_commonality_of_user(self, other):
-        # Find how many of the logged-in user's posts the other user
-        # has liked and which tags they've both blogged about.
-        query = """
-        MATCH (they:User {username: {they} })
-        MATCH (you:User {username: {you} })
-        OPTIONAL MATCH (they)-[:LIKED]->(post:Post)<-[:PUBLISHED]-(you)
-        OPTIONAL MATCH (they)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag:Tag),
-                       (you)-[:PUBLISHED]->(:Post)<-[:TAGGED]-(tag)
-        RETURN COUNT(DISTINCT post) AS likes, COLLECT(DISTINCT tag.name) AS tags
-        """
-
-        return graph.cypher.execute(query, they=other.username, you=self.username)[0]
-
-def get_todays_recent_posts():
+def get_recent_assets():
     query = """
-    MATCH (user:User)-[:PUBLISHED]->(post:Post)<-[:TAGGED]-(tag:Tag)
-    WHERE post.date = {today}
-    RETURN user.username AS username, post, COLLECT(tag.name) AS tags
-    ORDER BY post.timestamp DESC LIMIT 5
+    MATCH (user:User)-[:OWNS]->(asset:Asset)<-[:APPLIES_TO]-(spec:Spec)
+    RETURN user.username AS username, asset, COLLECT(spec.name) AS specs
+    ORDER BY asset.timestamp DESC LIMIT 10
     """
 
-    return graph.cypher.execute(query, today=date())
+    return graph.cypher.execute(query)
 
 def timestamp():
     epoch = datetime.utcfromtimestamp(0)

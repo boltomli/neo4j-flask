@@ -1,14 +1,14 @@
-from .models import User, get_todays_recent_posts
+from .models import User, get_recent_assets
 from flask import Flask, request, session, redirect, url_for, render_template, flash
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    posts = get_todays_recent_posts()
-    return render_template('index.html', posts=posts)
+    assets = get_recent_assets()
+    return render_template('index.html', assets=assets)
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -48,36 +48,23 @@ def logout():
     flash('Logged out.')
     return redirect(url_for('index'))
 
-@app.route('/add_post', methods=['POST'])
-def add_post():
-    title = request.form['title']
-    tags = request.form['tags']
-    text = request.form['text']
+@app.route('/add_asset', methods=['POST'])
+def add_asset():
+    name = request.form['name']
+    asset_id = request.form['asset_id']
+    specs = request.form['specs']
 
-    if not title or not tags or not text:
-        if not title:
-            flash('You must give your post a title.')
-        if not tags:
-            flash('You must give your post at least one tag.')
-        if not text:
-            flash('You must give your post a text body.')
+    if not name or not asset_id or not specs:
+        if not name:
+            flash('You must give your asset a nick name.')
+        if not asset_id:
+            flash('You must give your asset an ID.')
+        if not specs:
+            flash('You must give your asset at least one property.')
     else:
-        User(session['username']).add_post(title, tags, text)
+        User(session['username']).add_asset(name, asset_id, specs)
 
     return redirect(url_for('index'))
-
-@app.route('/like_post/<post_id>')
-def like_post(post_id):
-    username = session.get('username')
-
-    if not username:
-        flash('You must be logged in to like a post.')
-        return redirect(url_for('login'))
-
-    User(username).like_post(post_id)
-
-    flash('Liked post.')
-    return redirect(request.referrer)
 
 @app.route('/profile/<username>')
 def profile(username):
@@ -85,23 +72,10 @@ def profile(username):
     user_being_viewed_username = username
 
     user_being_viewed = User(user_being_viewed_username)
-    posts = user_being_viewed.get_recent_posts()
-
-    similar = []
-    common = []
-
-    if logged_in_username:
-        logged_in_user = User(logged_in_username)
-
-        if logged_in_user.username == user_being_viewed.username:
-            similar = logged_in_user.get_similar_users()
-        else:
-            common = logged_in_user.get_commonality_of_user(user_being_viewed)
+    assets = user_being_viewed.get_assets()
 
     return render_template(
         'profile.html',
         username=username,
-        posts=posts,
-        similar=similar,
-        common=common
+        assets=assets
     )

@@ -1,0 +1,13 @@
+  <ul class="assets">
+  {% for row in assets %}
+    <li>
+    	<b>{{ row.asset.name }}</b>
+        {% if request.path == "/" %}
+    	by <a href="{{ url_for('profile', username=row.username) }}">{{ row.username }}</a>
+        {% endif %}
+        with ID {{ row.asset.asset_id }}<br>
+    	<i>{{ ", ".join(row.specs) }}</i><br>
+  {% else %}
+    <li>There aren't any assets yet!
+  {% endfor %}
+  </ul>
