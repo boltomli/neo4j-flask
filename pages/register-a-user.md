@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Register a User
+title: 用户注册
 index: 5
 ---
 
-# Register a User
+# 用户注册
 
-Before any content can be created on our blog, users will need to be able to sign up for an account. When successful, this will create a `User` node in the database with the properties `username` and `password`, where the password is hashed.
+每个用户都要注册一个账号。注册成功将在数据库中创建一个 `User` 结点，具有 `username` 和 `password` 属性，密码经过哈希处理。
 
-The registration page is located at `/register` and will accept both `GET` and `POST` requests. A `GET` request will be sent when a visitor lands on the page, and a `POST` request will be sent when they fill out the registration form. In `views.py`, the `/register` view is defined by the following:
+注册页面位于 `/register`，接受 `GET` 和 `POST` 请求。访问者打开页面时发出 `GET` 请求，填写注册表单时发出 `POST` 请求。`views.py` 中 `/register` 视图定义如下：
 
 ```python
 from .models import User, get_todays_recent_posts
@@ -16,7 +16,7 @@ from flask import Flask, request, session, redirect, url_for, render_template, f
 
 app = Flask(__name__)
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -36,15 +36,23 @@ def register():
     return render_template('register.html')
 ```
 
-The `request` variable is a Flask object that parses the incoming request, allowing you to access the request's data. For example, the method of the request (either `GET` or `POST` or whatever is allowed) is stored on `request.method`. As I said before, when a user lands on the page a `GET` request is sent. When a user fills out the registration form, a `POST` request is sent. This view checks the method type, and if it is a `GET` request it simply returns the template `register.html` with Flask's [`render_template()`](http://flask.pocoo.org/docs/0.10/api/#flask.render_template), which looks into the `blog/templates` directory for templates and passes any necessary context (in this case, an error message). However, if it is a `POST` request, the `username` and `password` are parsed from the request and a user is created if their inputs meet all of the criteria. To understand this better, we'll have to look at part of the `User` class that was defined in `models.py`. 
+`request` 变量是 Flask 对象，用来处理传入请求，可以用来访问请求的数据。比如请求的方法就储存在 `request.method`，无论是 `GET`、`POST` 还是其它可能的类型。如上所述，访问者打开页面时发出 `GET` 请求，填写注册表单时发出 `POST` 请求。此视图检查方法的类型，如果是 `GET` 请求就简单地交由 Flask [`render_template()`](http://flask.pocoo.org/docs/0.10/api/#flask.render_template) 返回来自 `asset/templates` 目录的 `register.html` 模版，并传递必要的上下文（在此例中，为错误信息）。然而, 如果是 `POST` 请求，`username` 和 `password` 将被处理，假如满足一切条件，用户将被创建。为了更好地理解，我们看下 `models.py` 中定义的 `User` 类。
 
 ```python
-from py2neo import Graph, Node, Relationship
+from py2neo import Graph, Node, Relationship, authenticate
 from passlib.hash import bcrypt
 from datetime import datetime
+import os
 import uuid
 
-graph = Graph()
+url = os.environ.get('GRAPHENEDB_URL', 'http://localhost:7474')
+username = os.environ.get('NEO4J_USERNAME')
+password = os.environ.get('NEO4J_PASSWORD')
+
+if username and password:
+    authenticate(url.strip('http://'), username, password)
+
+graph = Graph(url + '/db/data/')
 
 class User:
     def __init__(self, username):
@@ -63,9 +71,9 @@ class User:
             return False
 ```
 
-An object of class `User` is initialized with a `username` argument. The `User.find()` method uses py2neo's [`Graph.find_one()`](http://py2neo.org/2.0/essentials.html#py2neo.Graph.find_one) method to find a node in the database with label User and the given username, returning a [`py2neo.Node`](http://py2neo.org/2.0/essentials.html#nodes) object. Recall that a uniqueness constraint was created for User nodes based on the username property, so there will not be more than one user with the given username. The `User.register()` method checks if a user with that username already exists in the database; if not, then a user is created with the given username and password by passing the `py2neo.Node` object to the [`Graph.create()`](http://py2neo.org/2.0/essentials.html#py2neo.Graph.create) method. `True` is returned to indicate that the registration was successful.
+`User` 类的一个对象由 `username` 参数初始化。`User.find()` 方法调用 py2neo 的 [`Graph.find_one()`](http://py2neo.org/2.0/essentials.html#py2neo.Graph.find_one) 方法用给定用户名在数据库中查找标签为 User 的结点，返回一个 [`py2neo.Node`](http://py2neo.org/2.0/essentials.html#nodes) 对象。对于 User 结点我们基于用户名属性建立了唯一性约束，则不能有多于一个用户使用同一用户名。`User.register()` 方法检查数据库中是否有同名用户；如果没有，用给定用户名和密码创建用户，传递 `py2neo.Node` 对象给 [`Graph.create()`](http://py2neo.org/2.0/essentials.html#py2neo.Graph.create) 方法。注册成功返回 `True`。
 
-Finally, to fully understand the registration procedure we should take a look at the `register.html` template:
+最后，为了完整地理解注册过程，我们必须要看下 `register.html` 模版：
 
 {% raw %}
 ```html
@@ -85,6 +93,36 @@ Finally, to fully understand the registration procedure we should take a look at
 ```
 {% endraw %}
 
-Recall in `views.py` that the `register()` method defined a variable `error` with a string telling the user what they did wrong. The variables passed along with `render_template()` are called 'context' and are made available in the context of the template. Thus, they can be accessed with the double curly braces in the respective template `.html` file. If `error` is not `None`, then it is displayed to the visitor. The form sends a `POST` request to the `/register` view due to {% raw %}`action="{{ url_for('register') }}"`{% endraw %}, where [`url_for()`](http://flask.pocoo.org/docs/0.10/api/#flask.url_for) is a Flask method for accessing URLs defined in view functions. The form's data is accessed with the input's names; for example, the string that the user types into the `username` text box is accessed with `request.form['username']`.
+`views.py` 中的 `register()` 方法用 flash 提供了 `message` 字符串。与 `render_template()` 一起传递的变量叫做 “上下文”，可以在相对应的 `.html` 模版中使用双大括号访问。在此是通过嵌入的 `layout.html`：
 
-<p align="right"><a href="{{ site.baseurl }}/pages/login-a-user.html">Next: Login a User</a></p>
+{% raw %}
+```html
+<!doctype html>
+<title>My Assets</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<div class="page">
+  <h1>My Assets</h1>
+  <div class="metanav">
+  {% if session.username %}
+  Logged in as {{ session.username }}
+  {% endif %}
+  <a href="{{ url_for('index') }}">Home</a>
+  {% if not session.username %}
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+  {% else %}
+    <a href="{{ url_for('profile', username=session.username) }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  {% endif %}
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
+</div>
+```
+{% endraw %}
+
+表单能够发出 `POST` 请求给 `/register` 视图，是由于此动作 {% raw %}`action="{{ url_for('register') }}"`{% endraw %}。[`url_for()`](http://flask.pocoo.org/docs/0.10/api/#flask.url_for) 是 Flask 用来访问视图函数中定义的 URL 的方法。表单数据可通过输入组件的名称获取；比如，用户填在 `username` 文本框里的字符串就用 `request.form['username']`。
+
+<p align="right"><a href="{{ site.baseurl }}/pages/login-a-user.html">下节：用户登录</a></p>

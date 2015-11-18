@@ -10,7 +10,7 @@ index: 4
 
 `<img width="100%" height="100%" src="http://i.imgur.com/9Nuvbpz.png">`
 
-在开始之前先创建唯一约束（从而也就有了索引）。用户、资产和特性都不应有重复。`__init__.py` 包含了如下代码，因此每次应用启动都会运行：
+在开始之前先创建唯一性约束（从而也就有了索引）。用户、资产和特性都不应有重复。`__init__.py` 包含了如下代码，因此每次应用启动都会运行：
 
 ```python
 from .views import app
@@ -22,10 +22,10 @@ def create_uniqueness_constraint(label, property):
     graph.cypher.execute(query)
 
 create_uniqueness_constraint("User", "username")
-create_uniqueness_constraint("Asset", "name")
-create_uniqueness_constraint("Spec", "id")
+create_uniqueness_constraint("Asset", "id")
+create_uniqueness_constraint("Spec", "name")
 ```
 
-接下来，我们将探讨 `views.py` 中定义的每一个视图及其在 `models.py` 中对应的逻辑。
+接下来，我们将探讨 `views.py` 中定义的每个视图及其在 `models.py` 中对应的逻辑。
 
-<p align="right"><a href="{{ site.baseurl }}/pages/register-a-user.html">下节：注册用户</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/register-a-user.html">下节：用户注册</a></p>
