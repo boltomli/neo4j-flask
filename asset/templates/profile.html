@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>{{ username }}'s profile</h2>
+
+{% if session.username %}
+    {% if session.username == username %}
+        <h3>Your assets:</h3>
+
+    {% else %}
+
+        <h3>{{ username }}'s assets:</h3>
+
+    {% endif %}
+{% endif %}
+
+{% include "display_assets.html" %}
+
+{% endblock %}
