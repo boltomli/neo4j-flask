@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Add Style
-index: 12
+title: 添加样式
+index: 10
 ---
 
-# Add Style
+# 添加样式
 
-The following was stolen (with a couple of modifications) from the [Flask tutorial](http://flask.pocoo.org/docs/0.10/tutorial/css/) that this tutorial is based on. This is the `style.css` file located in `/blog/static`.
+以下改自 [Flask tutorial](http://flask.pocoo.org/docs/0.10/tutorial/css/) ，存储在 `/asset/static` 里的 `style.css` 文件：
 
 ```css
 body            { font-family: sans-serif; background: #eee; }
@@ -18,12 +18,12 @@ dd              { display: block; margin-left: 0px; }
 dl              { font-weight: bold; }
 a:visited 		{ color: #800080; }
 .page           { margin: 2em auto; width: 35em; border: 5px solid #ccc; padding: 0.8em; background: white; }
-.posts          { list-style: none; margin: 0; padding: 0; }
-.posts li       { margin: 0.8em 1.2em; }
-.posts li h2    { margin-left: -1em; }
+.assets         { list-style: none; margin: 0; padding: 0; }
+.assets li      { margin: 0.8em 1.2em; }
+.assets li h2   { margin-left: -1em; }
 .metanav        { text-align: right; font-size: 0.8em; padding: 0.3em; margin-bottom: 1em; background: #fafafa; }
 .flash          { background: #cee5F5; padding: 0.5em; border: 1px solid #aacbe2; }
 .error          { background: #f0d6d6; padding: 0.5em; }
 ```
 
-<p align="right"><a href="{{ site.baseurl }}/pages/run-application.html">Next: Run the Application</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/run-application.html">下页：运行应用</a></p>

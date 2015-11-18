@@ -1,19 +1,19 @@
 ---
 layout: default
-title: Run the Application
-index: 13
+title: 运行应用
+index: 11
 ---
 
-# Run the Application
+# 运行应用
 
-First and foremost, make sure you have [Neo4j](http://neo4j.com/download/other-releases/) up and running at [http://localhost:7474](http://localhost:7474) (the default port when starting Neo4j).
+首先确认 [Neo4j](http://neo4j.com/download/other-releases/) 正常运行于 [http://localhost:7474](http://localhost:7474)（启动 Neo4j 时的默认端口）。
 
-To run the application, assuming your `run.py` file looks as I described it [here]({{ site.baseurl }}/pages/project-structure.html), simply execute `run.py`:
+要运行应用，[项目结构]({{ site.baseurl }}/pages/project-structure.html) 中的要求均应满足，之后执行 `run.py`：
 
 ```
-python run.py
+python3 run.py
 ```
 
-Your application will be available at [http://localhost:5000](http://localhost:5000).
+即可在 [http://localhost:5000](http://localhost:5000) 访问应用。
 
-<p align="right"><a href="{{ site.baseurl }}/pages/deploy-heroku.html">Next: Deploy to Heroku</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/homework.html">下节：家庭作业</a></p>
