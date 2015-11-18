@@ -17,11 +17,11 @@ index: 0
 
 * Python
 	* 包管理
-		* Windows
-		* Mac OS
+		* Windows：easy_install, pip
+		* Mac OS：homebrew, pip
 		* Linux
-			* Ubuntu
-			* Arch
+			* Ubuntu：apt, pip
+			* Arch：pacman, AUR, pip
 	* 编辑器
 		* IDLE
 		* PyCharm
@@ -30,9 +30,12 @@ index: 0
 * Neo4j
 	* 图数据库
 	* Cypher
-	* py2neo
+	* Drivers: py2neo, Neo4jClient (.NET)
 * 版本控制
 	* Git
 	* GitHub
+* DevOps
+	* 持续集成：Travis CI
+	* 部署：Heroku
 
 <p align="right"><a href="{{ site.baseurl }}/pages/virtual-env.html">下节：虚拟环境</a></p>
