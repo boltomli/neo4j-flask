@@ -1,33 +1,31 @@
 ---
 layout: default
-title: The Data Model
+title: 数据模型
 index: 4
 ---
 
-# The Data Model
+# 数据模型
 
-To store information about our users and their acitivites on or our social blogging application, let's think about how we'll want to model this data. For this example, we'll have User, Post, and Tag nodes. Conceptually, we want to capture users publishing posts, tags tagging posts, and users liking posts. In Neo4j, this will look like:
+我们目前只考虑 IT 资产，大致需要 User（用户）、Asset（资产）以及 Spec（特性）三种结点。概念上讲，用户拥有资产，资产有其特性，用户还可能汇报给另一用户。（图片待加）
 
-<img width="100%" height="100%" src="http://i.imgur.com/9Nuvbpz.png">
+`<img width="100%" height="100%" src="http://i.imgur.com/9Nuvbpz.png">`
 
-Before beginning, we'll want to create uniqueness constraints (which will also create indexes). We don't want any duplicate users, posts, or tags, so `indexes.py` contains the following and is included in `__init__.py` so that it is run when the app is started:
+在开始之前先创建唯一约束（从而也就有了索引）。用户、资产和特性都不应有重复。`__init__.py` 包含了如下代码，因此每次应用启动都会运行：
 
 ```python
+from .views import app
 from .models import graph
 
-nodes = [
-    ('User', 'username'),
-    ('Post', 'id'),
-    ('Tag', 'name')
-]
+def create_uniqueness_constraint(label, property):
+    query = "CREATE CONSTRAINT ON (n:{label}) ASSERT n.{property} IS UNIQUE"
+    query = query.format(label=label, property=property)
+    graph.cypher.execute(query)
 
-for label, property in nodes:
-    try:
-        graph.schema.create_uniqueness_constraint(label, property)
-    except:
-        continue
+create_uniqueness_constraint("User", "username")
+create_uniqueness_constraint("Asset", "name")
+create_uniqueness_constraint("Spec", "id")
 ```
 
-Next, we'll go through each view defined in `views.py` and discuss the corresponding logic in `models.py`.
+接下来，我们将探讨 `views.py` 中定义的每一个视图及其在 `models.py` 中对应的逻辑。
 
-<p align="right"><a href="{{ site.baseurl }}/pages/register-a-user.html">Next: Register a User</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/register-a-user.html">下节：注册用户</a></p>
