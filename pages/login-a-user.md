@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Login a User
+title: 用户登录
 index: 6
 ---
 
-# Login a User
+# 用户登录
 
-Now that users are able to register for an account, we can define the view that allows them to login to the site and start a [session](http://flask.pocoo.org/docs/0.10/quickstart/#sessions). In `views.py`, my `/login` view is defined by the following:
+用户可以注册帐号之后，我们就可以定义登录视图，允许用户登录站点并开始 [会话](http://flask.pocoo.org/docs/0.10/quickstart/#sessions)。`views.py` 中 `/login` 视图定义如下：
 
 ```python
 @app.route('/login', methods=['GET', 'POST'])
@@ -25,7 +25,7 @@ def login():
     return render_template('login.html')
 ```
 
-The code here should look similar to the `/register` view. There is a similar form to fill out on `login.html`, where a user types in their username and password. With the given username, a `User` object is initialized. The password they filled out in the form is verified with [`bcrypt.verify()`](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt.html) against the hashed password that was retrieved from the corresponding User node in the database. If the verification is successful it will return `True`, then a `session` object is created and `session['username']` is set to the given username. The `session` object allows us to follow the user through requests with cookies. The user is then directed to the home page, on which they can add their first post. In `models.py`, the `User.verify_password()` method is defined as:
+代码和 `/register` 视图类似。`login.html` 中的表单用来输入用户名和密码。`User` 对象以给定用户名初始化。填入表单的密码通过 [`bcrypt.verify()`](https://pythonhosted.org/passlib/lib/passlib.hash.bcrypt.html) 和数据库中取出的哈希比对。验证成功返回 `True`，之后创建 `session` 对象，`session['username']` 被设为给定用户名。`session` 对象让我们可以用 cookie 请求跟随用户。用户随后被转向首页，可以开始添加资产了。`models.py` 中 `User.verify_password()` 方法定义为：
 
 ```python
 class User:
@@ -40,16 +40,15 @@ class User:
             return False
 ```
 
-Note that `py2neo.Node` properties can be retrieved just as you would retrieve values from a Python dictionary. In this case, I got the password property off of the `user` object with `user['password']`.
+可以像 Python 字典一样获取 `py2neo.Node` 的属性。在这里，从 `user` 对象获取密码属性用 `user['password']`。
 
-The `login.html` template is nearly identical to the `register.html` template, with the exception of the form's action which sends a `POST` request to the `/login` view instead:
-
+`login.html` 模版和 `register.html` 几乎一样，除了表单动作改向 `/login` 视图发 `POST` 请求：
 {% raw %}
 ```html
 {% extends "layout.html" %}
 {% block body %}
   <h2>Login</h2>
-    <form action="{{ url_for('login') }}" method="post">
+	<form action="{{ url_for('login') }}" method="post">
         <dl>
             <dt>Username:</dt>
             <dd><input type="text" name="username"></dd>
@@ -57,9 +56,9 @@ The `login.html` template is nearly identical to the `register.html` template, w
             <dd><input type="password" name="password"></dd>
         </dl>
         <input type="submit" value="Login">
-    </form>
+	</form>
 {% endblock %}
 ```
 {% endraw %}
 
-<p align="right"><a href="{{ site.baseurl }}/pages/add-a-post.html">Next: Add a Post</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/add-an-asset.html">下节：添加资产</a></p>
