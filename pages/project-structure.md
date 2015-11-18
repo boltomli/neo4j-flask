@@ -1,17 +1,17 @@
 ---
 layout: default
-title: Project Structure
+title: 项目结构
 index: 3
 ---
 
-# Project Structure
+# 项目结构
 
-The Explore Flask book provides [great documentation](https://exploreflask.com/organizing.html) on best-practices for organizing your project. For this sample blogging application, we're going to keep it relatively simple:
+Explore Flask 有[很好的文档](https://exploreflask.com/organizing.html)讲述组织项目的最佳实践。我们采用相对简单的结构：
 
 ```
 run.py
 requirements.txt
-blog/
+asset/
 	__init__.py
 	models.py
 	views.py
@@ -24,34 +24,34 @@ blog/
 		login.html
 		logout.html
 		profile.html
-		display_posts.html
+		display_assets.html
 ```
 
-Recall that we created `requirements.txt` in the previous step. Typically, the bulk of the action will take place in `models.py` (where we'll define classes, methods, etc.) and `views.py` (where we'll define our 'views', or site pages). The `__init__.py` file in the `blog/` directory allows it to be used as a [package](https://exploreflask.com/organizing.html#package).
+上节里我们已经生成了 `requirements.txt`。一般来说，我们在 `models.py` 中定义类和方法等，在 `views.py` 中定义“视图”，也就是站点页面。`asset/` 目录里的 `__init__.py` 文件使得 `asset` 可以被用作[包](https://exploreflask.com/organizing.html#package)。
 
-In `views.py`, we'll import the classes and functions we need from `models.py` and initialize the app. Then, in `__init__.py`, we'll import `views.py` and `indexes.py` (`indexes.py` is explained in the next section). 
+我们在 `views.py` 中引入 `models.py` 里必要的类和函数并初始化应用。之后在 `__init__.py` 中引入 `views.py` 和 `indexes.py` （后面会讲到 `indexes.py`）。
 
-`run.py` is "the file that is invoked to start up a development server. It gets a copy of the app from your package and runs it. This won’t be used in production, but it will see a lot of mileage in development." My `run.py` file looks like this:
+`run.py` 用来启动开发服务器，生产环境中用不到。`run.py` 文件内容如下：
 
 ```python
-from blog import app
+from asset import app
 import os
 
 app.secret_key = os.urandom(24)
 app.run(debug=True)
 ```
 
-Setting the app's `secret_key` allows you to use sessions, which will be explained later. Setting `debug` to `True` allows you to see the stacktrace when anything goes wrong. When putting your application into production, however, `debug` should be set to `False`. At the end of the tutorial, we'll start our sample blog with `python run.py` and navigate to [http://localhost:5000](http://localhost:5000).
+设定 `secret_key` 以使用会话，后面会讲到。把 `debug` 设为 `True` 方便看到出问题时的错误栈信息，生产环境中应该设为 `False`。使用 `python run.py` 启动应用，并在浏览器中访问[http://localhost:5000](http://localhost:5000).
 
-The `blog/static` directory contains all CSS, JavaScript, and images, and the `blog/templates` directory contains all your Jinja2 templates.
+`asset/static` 目录包含所有 CSS，JavaScript 和图片文件。`asset/templates` 目录包含所有 Jinja2 模版.
 
-Note that if you're on Neo4j 2.2 and above, you'll need to set environment variables `NEO4J_USERNAME` and `NEO4J_PASSWORD` to your username and password, respectively:
+如果使用 Neo4j 2.2 及以上版本，请分别设置环境变量 `NEO4J_USERNAME` 和 `NEO4J_PASSWORD`：
 
 ```
 $ export NEO4J_USERNAME=username
 $ export NEO4J_PASSWORD=password
 ```
 
-Or, set `dbms.security.auth_enabled=false` in `conf/neo4j-server.properties`.
+也可以在 `conf/neo4j-server.properties` 中设置 `dbms.security.auth_enabled=false`。当然，生产环境中不能这样做。可以想想有没有其它办法。
 
-<p align="right"><a href="{{ site.baseurl }}/pages/the-data-model.html">Next: The Data Model</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/the-data-model.html">下节：数据模型</a></p>

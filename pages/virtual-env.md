@@ -6,7 +6,7 @@ title: 虚拟环境
 
 # 虚拟环境
 
-本节的概念对于几乎所有项目都适用，实现方法各有不同而已。Python 关于虚拟环境的 [文档](http://docs.python-guide.org/en/latest/dev/virtualenvs/) 值得一读。
+本节的概念对于几乎所有项目都适用，实现方法各有不同而已。Python 关于虚拟环境的[文档](http://docs.python-guide.org/en/latest/dev/virtualenvs/)值得一读。
 
 在开始开发之前设置一个虚拟环境，使得其中的更改可以保存且不会影响其它项目。假如一个项目依赖 py2neo 1.6.4，另一个项目依赖 py2neo 2.0.0，虚拟环境可以保证每个项目都使用合适的包。
 
@@ -28,7 +28,7 @@ source neo4j-asset/bin/activate
 用 `pip freeze` 查看 Python 包，确认当前处于何种状态：
 
 ```
-pip freeze
+pip3 freeze
 ```
 
 
