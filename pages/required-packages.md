@@ -1,45 +1,45 @@
 ---
 layout: default
-title: Required Packages
+title: 需要的包
 index: 2
 ---
 
-# Required Packages
+# 需要的包
 
-For our sample blogging application, we'll need to install Flask, py2neo, passlib, and bcrypt:
-
-```
-pip install flask
-pip install py2neo
-pip install passlib
-pip install bcrypt
-```
-
-If we execute `pip freeze` again, we'll see that we have a lot more packages installed now:
+我们需要安装 Flask，py2neo，passlib 和 bcrypt：
 
 ```
-pip freeze
+pip3 install flask
+pip3 install py2neo
+pip3 install passlib
+pip3 install bcrypt
+```
+
+再执行一次 `pip freeze`，可以看到很多包已被装上：
+
+```
+pip3 freeze
 ```
 
 ```
+bcrypt==2.0.0
+cffi==1.3.0
 Flask==0.10.1
-Jinja2==2.7.3
-MarkupSafe==0.23
-Werkzeug==0.9.6
-bcrypt==1.1.0
-cffi==0.8.6
 itsdangerous==0.24
-passlib==1.6.2
-py2neo==2.0.3
-pycparser==2.10
-six==1.9.0
-wsgiref==0.1.2
+Jinja2==2.8
+MarkupSafe==0.23
+passlib==1.6.5
+py2neo==2.0.8
+pycparser==2.14
+six==1.10.0
+Werkzeug==0.11.2
+wheel==0.24.0
 ```
 
-As suggested by Flask's documentation, these dependencies should be stored in a text file called `requirements.txt`:
+按照 Flask 文档的建议，我们最好把这些依赖确定下来，以便于重建环境，且可以避免破坏性的升级包：
 
 ```
-pip freeze > requirements.txt
+pip3 freeze > requirements.txt
 ```
 
-<p align="right"><a href="{{ site.baseurl }}/pages/project-structure.html">Next: Project Structure</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/project-structure.html">下节：项目结构</a></p>

@@ -1,29 +1,31 @@
 ---
 layout: default
 index: 1
-title: Virtual Environments
+title: 虚拟环境
 ---
 
-# Virtual Environments
+# 虚拟环境
 
-Before beginning, you'll want to set up a Python virtual environment so you don't affect any of your other Python projects. For example, you might use py2neo 1.6.4 for one project and py2neo 2.0.0 for another. Virtual environments ensure your application is using the desired version of the installed packages.
+本节的概念对于几乎所有项目都适用，实现方法各有不同而已。Python 关于虚拟环境的 [文档](http://docs.python-guide.org/en/latest/dev/virtualenvs/) 值得一读。
 
-The [documentation](http://docs.python-guide.org/en/latest/dev/virtualenvs/) on virtual environments is a good read if you are unfamiliar with this workflow. To set up a virtual environment for this project, we'll first install `virtualenv` with `pip`:
+在开始开发之前设置一个虚拟环境，使得其中的更改可以保存且不会影响其它项目。假如一个项目依赖 py2neo 1.6.4，另一个项目依赖 py2neo 2.0.0，虚拟环境可以保证每个项目都使用合适的包。
 
-```
-pip install virtualenv
-```
-
-Then, we'll create a virtual environment named `neo4j-blog` and activate it:
+用 `pip` （Python 3版本）安装 `virtualenv`：
 
 ```
-virtualenv neo4j-blog
-source neo4j-blog/bin/activate
+pip3 install virtualenv
 ```
 
-Once activated, you'll notice your shell prompt has changed to reflect which virtual environment you're currently in.
+创建一个叫做 `neo4j-asset` 的虚拟环境并激活：
 
-With `pip freeze`, we can see that we've started with a clean slate (when it comes to our Python packages):
+```
+virtualenv neo4j-asset
+source neo4j-asset/bin/activate
+```
+
+激活之后，命令行提示符将显示当前使用的虚拟环境名。
+
+用 `pip freeze` 查看 Python 包，确认当前处于何种状态：
 
 ```
 pip freeze
@@ -31,7 +33,7 @@ pip freeze
 
 
 ```
-wsgiref==0.1.2
+wheel==0.24.0
 ```
 
-<p align="right"><a href="{{ site.baseurl }}/pages/required-packages.html">Next: Required Packages</a></p>
+<p align="right"><a href="{{ site.baseurl }}/pages/required-packages.html">下节：需要的包</a></p>
