@@ -8,10 +8,10 @@ index: 0
 
 ## 必需
 
-* 开发经验
-	* 桌面
-	* 移动
-	* 网络
+* 开发
+* 测试
+* 设计
+* 文档
 
 ## 进阶
 
@@ -23,14 +23,18 @@ index: 0
 			* Ubuntu：apt, pip
 			* Arch：pacman, AUR, pip
 	* 编辑器
-		* IDLE
 		* PyCharm
 		* Geany
 * Flask 微框架：模型-视图-模版
 * Neo4j
 	* 图数据库
 	* Cypher
-	* Drivers: py2neo, Neo4jClient (.NET)
+	* Drivers: py2neo (Python), Neo4jClient (.NET)
+* 测试
+	* BDD
+	* TDD
+* 前端
+	* 可视化：d3.js
 * 版本控制
 	* Git
 	* GitHub
