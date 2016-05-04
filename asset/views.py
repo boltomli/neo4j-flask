@@ -54,13 +54,12 @@ def add_asset():
     asset_id = request.form['asset_id']
     specs = request.form['specs']
 
-    if not name or not asset_id or not specs:
-        if not name:
-            flash('You must give your asset a nick name.')
-        if not asset_id:
-            flash('You must give your asset an ID.')
-        if not specs:
-            flash('You must give your asset at least one property.')
+    if not name:
+        flash('You must give your asset a nickname.')
+    elif not asset_id:
+        flash('You must give your asset an ID.')
+    elif not specs:
+        flash('You must give your asset at least one property.')
     else:
         User(session['username']).add_asset(name, asset_id, specs)
 
