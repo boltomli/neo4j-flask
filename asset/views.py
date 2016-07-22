@@ -1,12 +1,21 @@
 from .models import User, get_recent_assets
-from flask import Flask, request, session, redirect, url_for, render_template, flash
+from flask import Flask, request, session, redirect, url_for, render_template, flash, send_from_directory
+import os
 
 app = Flask(__name__)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 @app.route('/')
 def index():
     assets = get_recent_assets()
     return render_template('index.html', assets=assets)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,6 +36,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -42,11 +52,13 @@ def login():
 
     return render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     flash('Logged out.')
     return redirect(url_for('index'))
+
 
 @app.route('/add_asset', methods=['POST'])
 def add_asset():
@@ -64,6 +76,7 @@ def add_asset():
         User(session['username']).add_asset(name, asset_id, specs)
 
     return redirect(url_for('index'))
+
 
 @app.route('/profile/<username>')
 def profile(username):
